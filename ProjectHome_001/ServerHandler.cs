@@ -1,6 +1,7 @@
 ﻿using AltV.Net;
 using AltV.Net.Elements.Entities;
 using AltV.Net.Elements.Factories;
+using ProjectHome_001.Database;
 using System;
 
 namespace ProjectHome_001
@@ -10,6 +11,7 @@ namespace ProjectHome_001
         public override void OnStart()
         {
             Alt.Log(" >> Server wird gestartet! << ");
+            new OwnDatabase();
             
         }
 
@@ -21,6 +23,11 @@ namespace ProjectHome_001
         public override IEntityFactory<IVehicle> GetVehicleFactory()
         {
             return new VehicleFactory();
+        }
+
+        public override IEntityFactory<IPlayer> GetPlayerFactory()
+        {
+            return new PlayerFactory();
         }
 
     }

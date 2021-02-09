@@ -19,10 +19,10 @@ namespace ProjectHome_001
 
 
         [ScriptEvent(ScriptEventType.PlayerConnect)]
-        public void OnPlayerConnect(IPlayer player, string reason)
+        public void OnPlayerConnect(OwnPlayer player, string reason)
         {
             player.Model = (uint)PedModel.ArmLieut01GMM;
-            player.Spawn(new AltV.Net.Data.Position (0, 0, 72));
+            player.Spawn(new AltV.Net.Data.Position (0, 0, 72), 0);
             player.GiveWeapon(AltV.Net.Enums.WeaponModel.AdvancedRifle, 999, true);
             player.GiveWeapon(AltV.Net.Enums.WeaponModel.Widowmaker, 999, true);
             player.GiveWeapon(AltV.Net.Enums.WeaponModel.FireExtinguisher, 999, true);
@@ -123,32 +123,32 @@ namespace ProjectHome_001
 
         [ScriptEvent(ScriptEventType.PlayerEnterVehicle)]
 
-        public void OnPlayerEnterVehicle(OwnVehicle vehicle, IPlayer player, byte seat)
+        public void OnPlayerEnterVehicle(OwnVehicle vehicle, OwnPlayer player, byte seat)
         {
             
-            SendNotification(player, (VehicleModel)vehicle.Model + " betreten.");
+            player.SendNotification((VehicleModel)vehicle.Model + " betreten.");
 
         }
 
         [ScriptEvent(ScriptEventType.PlayerLeaveVehicle)]
 
-        public void OnPlayerLeaveVehicle(OwnVehicle vehicle, IPlayer player, byte seat)
+        public void OnPlayerLeaveVehicle(OwnVehicle vehicle, OwnPlayer player, byte seat)
         {
            
-            SendNotification(player, (VehicleModel)vehicle.Model + " verlassen.");
+            player.SendNotification((VehicleModel)vehicle.Model + " verlassen.");
         }
 
 
-        public static void SendNotification(IPlayer player, string msg)
+        public static void SendNotification(OwnPlayer player, string msg)
         {
             player.Emit("ProjectHome_001:notify", msg);
         }
 
         [ScriptEvent(ScriptEventType.PlayerDead)]
 
-        public static void OnPlayerDead(IPlayer player, IEntity killer, uint weapon)
+        public static void OnPlayerDead(OwnPlayer player, IEntity killer, uint weapon)
         {
-            if ((killer is IPlayer killerPlayer))
+            if ((killer is OwnPlayer killerPlayer))
             {
                 if (killerPlayer == player)
                 {

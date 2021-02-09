@@ -3,7 +3,7 @@ using AltV.Net.Data;
 using AltV.Net.Elements.Entities;
 using AltV.Net.Enums;
 using AltV.Net.Resources.Chat.Api;
-
+using ProjectHome_001.OwnEntities;
 
 namespace ProjectHome_001
 {
@@ -21,7 +21,7 @@ namespace ProjectHome_001
         [ScriptEvent(ScriptEventType.PlayerConnect)]
         public void OnPlayerConnect(IPlayer player, string reason)
         {
-            player.Model = (uint)PedModel.Armymech01SMY;
+            player.Model = (uint)PedModel.ArmLieut01GMM;
             player.Spawn(new AltV.Net.Data.Position (0, 0, 72));
             player.GiveWeapon(AltV.Net.Enums.WeaponModel.AdvancedRifle, 999, true);
             player.GiveWeapon(AltV.Net.Enums.WeaponModel.Widowmaker, 999, true);
@@ -123,7 +123,7 @@ namespace ProjectHome_001
 
         [ScriptEvent(ScriptEventType.PlayerEnterVehicle)]
 
-        public void OnPlayerEnterVehicle(IVehicle vehicle, IPlayer player, byte seat)
+        public void OnPlayerEnterVehicle(OwnVehicle vehicle, IPlayer player, byte seat)
         {
             
             SendNotification(player, (VehicleModel)vehicle.Model + " betreten.");
@@ -132,7 +132,7 @@ namespace ProjectHome_001
 
         [ScriptEvent(ScriptEventType.PlayerLeaveVehicle)]
 
-        public void OnPlayerLeaveVehicle(IVehicle vehicle, IPlayer player, byte seat)
+        public void OnPlayerLeaveVehicle(OwnVehicle vehicle, IPlayer player, byte seat)
         {
            
             SendNotification(player, (VehicleModel)vehicle.Model + " verlassen.");

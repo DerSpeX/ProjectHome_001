@@ -47,6 +47,14 @@ namespace ProjectHome_001.OwnEntities
             }
             EngineOn = !EngineOn;
 
+            if (EngineOn)
+            {
+                PlayerEvents.SendNotification(NetworkOwner, "Motor An");
+            }
+            else
+            {
+                PlayerEvents.SendNotification(NetworkOwner, "Motor Aus");
+            }
         }
     }
    

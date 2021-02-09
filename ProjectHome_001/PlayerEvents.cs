@@ -4,6 +4,7 @@ using AltV.Net.Elements.Entities;
 using AltV.Net.Enums;
 using AltV.Net.Resources.Chat.Api;
 using ProjectHome_001.OwnEntities;
+using System;
 
 namespace ProjectHome_001
 {
@@ -119,6 +120,11 @@ namespace ProjectHome_001
 
 
 
+        }
+
+        internal static void SendNotification(IPlayer networkOwner, string v)
+        {
+            throw new NotImplementedException();
         }
 
         [ScriptEvent(ScriptEventType.PlayerEnterVehicle)]

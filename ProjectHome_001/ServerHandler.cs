@@ -7,7 +7,7 @@ namespace ProjectHome_001
     {
         public override void OnStart()
         {
-            Alt.Log(" >> Der Server wird gestartet! << ");
+            Alt.Log(" >> Server wird gestartet! << ");
         }
 
         public override void OnStop()

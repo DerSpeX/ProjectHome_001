@@ -3,9 +3,7 @@ using AltV.Net.Data;
 using AltV.Net.Elements.Entities;
 using AltV.Net.Enums;
 using AltV.Net.Resources.Chat.Api;
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace ProjectHome_001
 {
@@ -23,8 +21,8 @@ namespace ProjectHome_001
         [ScriptEvent(ScriptEventType.PlayerConnect)]
         public void OnPlayerConnect(IPlayer player, string reason)
         {
-            player.Model = (uint)PedModel.Clown01SMY;
-            player.Spawn(new AltV.Net.Data.Position (0, 0, 75));
+            player.Model = (uint)PedModel.Armymech01SMY;
+            player.Spawn(new AltV.Net.Data.Position (0, 0, 72));
             player.GiveWeapon(AltV.Net.Enums.WeaponModel.AdvancedRifle, 999, true);
             player.GiveWeapon(AltV.Net.Enums.WeaponModel.Widowmaker, 999, true);
             player.GiveWeapon(AltV.Net.Enums.WeaponModel.FireExtinguisher, 999, true);
@@ -32,15 +30,16 @@ namespace ProjectHome_001
             player.GiveWeapon(AltV.Net.Enums.WeaponModel.SMGMkII, 999, true);
             player.GiveWeapon(AltV.Net.Enums.WeaponModel.RPG, 999, true);
             player.GiveWeapon(AltV.Net.Enums.WeaponModel.PistolMkII, 999, true);
-
+            player.GiveWeapon(AltV.Net.Enums.WeaponModel.StunGun, 999, true);
+            
         }
 
         [ScriptEvent(ScriptEventType.PlayerEnterVehicle)]
 
         public void OnPlayerEnterVehicle(IVehicle vehicle, IPlayer player, byte seat)
         {
-            //vehicle.SecondaryColorRgb = new Rgba(255, 0, 0, 255);
-            SendNotification(player, "Fahrzeug betreten.");
+            
+            SendNotification(player, (VehicleModel)vehicle.Model + " betreten.");
 
         }
 
@@ -48,8 +47,8 @@ namespace ProjectHome_001
 
         public void OnPlayerLeaveVehicle(IVehicle vehicle, IPlayer player, byte seat)
         {
-            //vehicle.SecondaryColorRgb = new Rgba(255, 255, 255, 255);
-            SendNotification(player, "Fahrzeug verlassen.");
+           
+            SendNotification(player, (VehicleModel)vehicle.Model + " verlassen.");
         }
 
 

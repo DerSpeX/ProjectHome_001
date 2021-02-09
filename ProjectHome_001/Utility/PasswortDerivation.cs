@@ -46,5 +46,15 @@ namespace ProjectHome_001.Utility
                 }
             }
         }
+
+        internal static string Derive(string password)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static bool Verify(string password, string input)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

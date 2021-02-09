@@ -3,6 +3,7 @@ using AltV.Net.Data;
 using AltV.Net.Elements.Entities;
 using AltV.Net.Enums;
 using AltV.Net.Resources.Chat.Api;
+using ProjectHome_001.Database;
 using ProjectHome_001.OwnEntities;
 using System;
 
@@ -22,6 +23,18 @@ namespace ProjectHome_001
         [ScriptEvent(ScriptEventType.PlayerConnect)]
         public void OnPlayerConnect(OwnPlayer player, string reason)
         {
+            if (PlayerDatabase.DoesPlayerNameExists(player.Name))
+            {
+                player.LoadPlayer(player.Name);
+            }
+            else
+            {
+                player.CreatePlayer(player.Name, "1234");
+            }
+
+            player.SendNotification($"Cash: ~b~{player.Cash}");
+
+
             player.Model = (uint)PedModel.ArmLieut01GMM;
             player.Spawn(new AltV.Net.Data.Position (0, 0, 72), 0);
             player.GiveWeapon(AltV.Net.Enums.WeaponModel.AdvancedRifle, 999, true);
@@ -142,6 +155,14 @@ namespace ProjectHome_001
         {
            
             player.SendNotification((VehicleModel)vehicle.Model + " verlassen.");
+        }
+
+
+        [ScriptEvent(ScriptEventType.PlayerDisconnect)]
+        
+        public void PlayerOnDisconnect(OwnPlayer player, string reason)
+        {
+            if (player.IsLoggedIn) player.Save();
         }
 
 

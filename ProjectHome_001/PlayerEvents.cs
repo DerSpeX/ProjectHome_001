@@ -25,14 +25,14 @@ namespace ProjectHome_001
         {
             if (PlayerDatabase.DoesPlayerNameExists(player.Name))
             {
-                player.LoadPlayer(player.Name);
+             //   player.LoadPlayer(player.Name);
             }
             else
             {
-                player.CreatePlayer(player.Name, "1234");
+            //    player.CreatePlayer(player.Name, "1234");
             }
 
-            player.SendNotification($"Cash: ~b~{player.Cash}");
+            //player.SendNotification($"Cash: ~b~{player.Cash}");
 
 
             player.Model = (uint)PedModel.ArmLieut01GMM;
@@ -145,16 +145,15 @@ namespace ProjectHome_001
         public void OnPlayerEnterVehicle(OwnVehicle vehicle, IPlayer player, byte seat)
         {
             
-            player.SendNotification((VehicleModel)vehicle.Model + " betreten.");
+       //     player.SendNotification((VehicleModel)vehicle.Model + " betreten.");
 
         }
 
         [ScriptEvent(ScriptEventType.PlayerLeaveVehicle)]
 
         public void OnPlayerLeaveVehicle(OwnVehicle vehicle, IPlayer player, byte seat)
-        {
-           
-            player.SendNotification((VehicleModel)vehicle.Model + " verlassen.");
+        {   
+        //    player.SendNotification((VehicleModel)vehicle.Model + " verlassen.");
         }
 
 
@@ -162,11 +161,11 @@ namespace ProjectHome_001
         
         public void PlayerOnDisconnect(IPlayer player, string reason)
         {
-            if (player.IsLoggedIn) player.Save();
+        //    if (player.IsLoggedIn) player.Save();
         }
 
 
-        public static void SendNotification(IPlayer player, string msg)
+        public static void SendNotification1(IPlayer player, string msg)
         {
             player.Emit("ProjectHome_001:notify", msg);
         }

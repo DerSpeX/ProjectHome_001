@@ -18,10 +18,8 @@ namespace ProjectHome_001
 
             foreach (IPlayer target in Alt.GetAllPlayers())
             {
-                if (target.Position.Distance(player.Position) <= 10)
-                {
-                    target.SendChatMessage($"{target.Name} sagt: {msg}");
-                }
+                target.SendChatMessage($"{player.Name} sagt: {msg}");
+
             }
         }
 
@@ -41,6 +39,7 @@ namespace ProjectHome_001
             player.SendChatMessage("/go [x] [y] [z] = Spawnt dich zu den eingegebenen Koordinaten.");
             player.SendChatMessage("/engine = Motor anschalten/ausschalten.");
             player.SendChatMessage("/fixveh = Fahrzeugreperatur.");
+            player.SendChatMessage("/list = Liste aller Spieler die sich auf dem Server befinden");
         }
 
 

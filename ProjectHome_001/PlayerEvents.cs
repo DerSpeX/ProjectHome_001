@@ -21,7 +21,7 @@ namespace ProjectHome_001
 
 
         [ScriptEvent(ScriptEventType.PlayerConnect)]
-        public void OnPlayerConnect(OwnPlayer player, string reason)
+        public void OnPlayerConnect(IPlayer player, string reason)
         {
             if (PlayerDatabase.DoesPlayerNameExists(player.Name))
             {
@@ -142,7 +142,7 @@ namespace ProjectHome_001
 
         [ScriptEvent(ScriptEventType.PlayerEnterVehicle)]
 
-        public void OnPlayerEnterVehicle(OwnVehicle vehicle, OwnPlayer player, byte seat)
+        public void OnPlayerEnterVehicle(OwnVehicle vehicle, IPlayer player, byte seat)
         {
             
             player.SendNotification((VehicleModel)vehicle.Model + " betreten.");
@@ -151,7 +151,7 @@ namespace ProjectHome_001
 
         [ScriptEvent(ScriptEventType.PlayerLeaveVehicle)]
 
-        public void OnPlayerLeaveVehicle(OwnVehicle vehicle, OwnPlayer player, byte seat)
+        public void OnPlayerLeaveVehicle(OwnVehicle vehicle, IPlayer player, byte seat)
         {
            
             player.SendNotification((VehicleModel)vehicle.Model + " verlassen.");
@@ -160,22 +160,22 @@ namespace ProjectHome_001
 
         [ScriptEvent(ScriptEventType.PlayerDisconnect)]
         
-        public void PlayerOnDisconnect(OwnPlayer player, string reason)
+        public void PlayerOnDisconnect(IPlayer player, string reason)
         {
             if (player.IsLoggedIn) player.Save();
         }
 
 
-        public static void SendNotification(OwnPlayer player, string msg)
+        public static void SendNotification(IPlayer player, string msg)
         {
             player.Emit("ProjectHome_001:notify", msg);
         }
 
         [ScriptEvent(ScriptEventType.PlayerDead)]
 
-        public static void OnPlayerDead(OwnPlayer player, IEntity killer, uint weapon)
+        public static void OnPlayerDead(IPlayer player, IEntity killer, uint weapon)
         {
-            if ((killer is OwnPlayer killerPlayer))
+            if ((killer is IPlayer killerPlayer))
             {
                 if (killerPlayer == player)
                 {

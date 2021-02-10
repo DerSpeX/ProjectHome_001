@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>C:\Users\PC Mike\Desktop\altv-server-windows\resources\ProjectHome_001\</OutputPath>
+    <OutputPath>C:\Users\DevSoon\Desktop\altv-server-windows\resources\ProjectHome_001\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

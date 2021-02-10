@@ -12,11 +12,11 @@ namespace ProjectHome_001
     {
         [ClientEvent("chat:message")]
 
-        public void OnChatMessage(OwnPlayer player, string msg)
+        public void OnChatMessage(IPlayer player, string msg)
         {
             if (msg.Length == 0 || msg[0] == '/') return;
 
-            foreach (OwnPlayer target in Alt.GetAllPlayers())
+            foreach (IPlayer target in Alt.GetAllPlayers())
             {
                 if (target.Position.Distance(player.Position) <= 10)
                 {
@@ -27,14 +27,14 @@ namespace ProjectHome_001
 
         [CommandEvent(CommandEventType.CommandNotFound)]
 
-        public void OnCommandNotFound(OwnPlayer player, string cmd)
+        public void OnCommandNotFound(IPlayer player, string cmd)
         {
             player.SendChatMessage("{FF0000} [Server] {FFFFFF} Befehl konnte nicht gefunden werden!");
         }
 
         [Command("?")]
 
-        public static void CMD_CommandList(OwnPlayer player)
+        public static void CMD_CommandList(IPlayer player)
         {
             player.SendChatMessage("/veh [1-255] [1-255] [1-255] = Fahrzeugspawn.");
             player.SendChatMessage("/pos = Zeigt deine aktuellen Koordinaten.");
@@ -56,7 +56,7 @@ namespace ProjectHome_001
 
 
         [Command("veh")]
-        public static void CMD_CreateVehicle(OwnPlayer player, string vehName, int r = 0, int g = 0, int b = 0)
+        public static void CMD_CreateVehicle(IPlayer player, string vehName, int r = 0, int g = 0, int b = 0)
         {
             uint vehHash = Alt.Hash(vehName);
             if (!Enum.IsDefined(typeof(VehicleModel), vehHash))
@@ -75,7 +75,7 @@ namespace ProjectHome_001
 
         [Command("engine")]
 
-        public static void CMD_Engine(OwnPlayer player)
+        public static void CMD_Engine(IPlayer player)
         {
             if (!player.IsInVehicle || player.Seat != 1) return;
             OwnVehicle veh = (OwnVehicle)player.Vehicle;
@@ -84,7 +84,7 @@ namespace ProjectHome_001
 
         [Command("fixveh")]
 
-        public static void CMD_FixVeh(OwnPlayer player)
+        public static void CMD_FixVeh(IPlayer player)
         {
             if (!player.IsInVehicle || player.Seat != 1) return;
             OwnVehicle veh = (OwnVehicle)player.Vehicle;
@@ -93,29 +93,33 @@ namespace ProjectHome_001
 
 
         [Command("pos")]
-        public static void CMD_LocateMyPos(OwnPlayer player)
+        public static void CMD_LocateMyPos(IPlayer player)
         {
             player.GetPosition();
             player.SendChatMessage(player.GetPosition().ToString());
         }
 
         [Command("go")]
-        public static void CMD_GoToPos(OwnPlayer player, float x, float y, float z)
+        public static void CMD_GoToPos(IPlayer player, float x, float y, float z)
         {
             player.SetPosition(x, y, z);
         }
         
+
+
+
+
         [Command("gethere")]
-        public static void CMD_GetHere(OwnPlayer player)
+        public static void CMD_GetHere(IPlayer player)
         {
             
         }
 
         [Command("kick")]
 
-        public static void CMD_Kick(OwnPlayer player)
+        public static void CMD_Kick(IPlayer player)
         {
-
+            player.SendChatMessage(player.SocialClubId.ToString());
         }
     }   
 }

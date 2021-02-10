@@ -104,10 +104,6 @@ namespace ProjectHome_001
         {
             player.SetPosition(x, y, z);
         }
-        
-
-
-
 
         [Command("gethere")]
         public static void CMD_GetHere(IPlayer player)
@@ -120,6 +116,15 @@ namespace ProjectHome_001
         public static void CMD_Kick(IPlayer player)
         {
             player.SendChatMessage(player.SocialClubId.ToString());
+        }
+
+        [Command("list")]
+        public static void CMD_ListPlayers(IPlayer player)
+        {
+            foreach (IPlayer target in Alt.GetAllPlayers())
+            {
+                player.SendChatMessage(target.ToString());
+            }
         }
     }   
 }

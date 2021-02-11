@@ -1,6 +1,7 @@
 ﻿using System;
 using AltV.Net;
 using AltV.Net.Data;
+using AltV.Net.Elements.Entities;
 using AltV.Net.Enums;
 using AltV.Net.Resources.Chat.Api;
 using ProjectHome_001.OwnEntities;
@@ -10,19 +11,7 @@ namespace ProjectHome_001
     class ChatHandler : IScript
     {
 
-        [ClientEvent("chat:message")]
-        public void OnChatMessage(OwnPlayer player, string msg)
-        {
-            if (msg.Length == 0 || msg[0] == '/') return;
-
-            foreach (OwnPlayer target in Alt.GetAllPlayers())
-            {
-                if (target.Position.Distance(player.Position) <= 10)
-                {
-                    target.SendChatMessage($"{player.Name} sagt: {msg}");
-                }
-            }
-        }
+        
 
         [CommandEvent(CommandEventType.CommandNotFound)]
         public void OnCommandNotFound(OwnPlayer player, string cmd)
@@ -78,6 +67,35 @@ namespace ProjectHome_001
         public static void CMD_Team(OwnPlayer player, int team)
         {
             player.SetTeam(team);
+        }
+
+        [Command("pos")]
+        public static void CMD_LocateMyPos(OwnPlayer player)
+        {
+            player.GetPosition();
+            player.SendChatMessage(player.GetPosition().ToString());
+        }
+
+        [Command("go")]
+        public static void CMD_GoToPos(OwnPlayer player, float x, float y, float z)
+        {
+            player.SetPosition(x, y, z);
+        }
+
+        [Command("SCId")]
+
+        public static void CMD_SocialClubId(OwnPlayer player)
+        {
+            player.SendChatMessage(player.SocialClubId.ToString());
+        }
+
+        [Command("player")]
+        public static void CMD_ListPlayers(OwnPlayer player)
+        {
+            foreach (OwnPlayer target in Alt.GetAllPlayers())
+            {
+                player.SendChatMessage(target.Name.ToString());
+            }
         }
 
         public static Position GetRandomPositionAround(Position pos, float range)

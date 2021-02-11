@@ -44,5 +44,21 @@ namespace ProjectHome_001.OwnEntities
             }
             EngineOn = !EngineOn;
         }
+
+
+        public void Engines()
+        {
+            if (EngineOn)
+            {
+                OwnPlayer player = (OwnPlayer)NetworkOwner;
+                player.SendNotification("Motor an");
+            }
+            else
+            {
+                OwnPlayer player = (OwnPlayer)NetworkOwner;
+                player.SendNotification("Motor aus");
+            }
+
+        }
     }
 }

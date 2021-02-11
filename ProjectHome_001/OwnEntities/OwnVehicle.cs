@@ -9,6 +9,7 @@ namespace ProjectHome_001.OwnEntities
     {
 
         public static float MAX_FUEL = 60.0f;
+
         public FuelTypes FuelType { get; set; }
         public float Fuel { get; set; }
 
@@ -20,42 +21,28 @@ namespace ProjectHome_001.OwnEntities
         public OwnVehicle(uint model, Position position, Rotation rotation, FuelTypes fueltype = FuelTypes.None) : base(model, position, rotation)
         {
             FuelType = fueltype;
-            //FuelType = FuelTypes.Benzin;
             Fuel = 0;
             ManualEngineControl = true;
-
         }
 
-        public void Repair()
+        /* public void Repair()
         {
-            if (NetworkOwner != null)
-            {
+            if(NetworkOwner != null) {
                 Fuel = MAX_FUEL;
                 NetworkOwner.Emit("ProjectHome_001:fixveh");
-                PlayerEvents.SendNotification(NetworkOwner, "Das Fahrzeug wurde repariert!");
+                PlayerEvents.SendNotification(NetworkOwner, "Fahrzeug repariert!");
             }
-        }
-
-
+        }*/
 
         public void ToggleEngine()
         {
-            if(EngineOn && FuelType != FuelTypes.None && Fuel == 0)
+            if (!EngineOn && FuelType != FuelTypes.None && Fuel == 0)
             {
-                PlayerEvents.SendNotification(NetworkOwner, "Tank leer!");
+                OwnPlayer player = (OwnPlayer)NetworkOwner;
+                player.SendNotification("Tank leer!");
                 return;
             }
             EngineOn = !EngineOn;
-
-            if (EngineOn)
-            {
-                PlayerEvents.SendNotification(NetworkOwner, "Motor An");
-            }
-            else
-            {
-                PlayerEvents.SendNotification(NetworkOwner, "Motor Aus");
-            }
         }
     }
-   
 }

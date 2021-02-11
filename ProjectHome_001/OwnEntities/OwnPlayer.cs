@@ -6,17 +6,19 @@ namespace ProjectHome_001.OwnEntities
 {
     class OwnPlayer : Player
     {
-        public static string ConnectionString = "SERVER=localhost;DATABASE=ProjectHome;UID=ProjectHome;PASSWORD=ProjectHome";
+
         public bool IsLoggedIn { get; set; }
         public int Db_Id { get; set; }
         public string DisplayName { get; set; }
         public uint Cash { get; set; }
 
-
+        public int Team { get; set; }
 
         public OwnPlayer(IntPtr nativePointer, ushort id) : base(nativePointer, id)
         {
             IsLoggedIn = false;
+            Cash = 500;
+            SetTeam(0);
         }
 
         public void Login()
@@ -24,10 +26,32 @@ namespace ProjectHome_001.OwnEntities
             IsLoggedIn = true;
         }
 
-
         public void SendNotification(string msg)
         {
             Emit("ProjectHome_001:notify", msg);
+        }
+
+        public void SetTeam(int team)
+        {
+            Team = team;
+
+            int color;
+            switch (team)
+            {
+                case 0: //Cops
+                    color = 3;
+                    break;
+                case 1: //Grove
+                    color = 2;
+                    break;
+                case 2: //Ballas
+                    color = 7;
+                    break;
+                default: //Zivilist
+                    color = 4;
+                    break;
+            }
+            SetStreamSyncedMetaData("ProjectHome_001:teamcolor", color);
         }
 
         public void CreatePlayer(string username, string password)
@@ -38,14 +62,12 @@ namespace ProjectHome_001.OwnEntities
             Login();
         }
 
-
         public void LoadPlayer(string username)
         {
             DisplayName = username;
             PlayerDatabase.LoadPlayer(this);
             Login();
         }
-
 
         public void Save()
         {

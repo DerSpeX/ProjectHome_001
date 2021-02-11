@@ -1,15 +1,14 @@
 ﻿using AltV.Net;
-using MySql.Data.MySqlClient;
 using ProjectHome_001.OwnEntities;
 using ProjectHome_001.Utility;
+using MySql.Data.MySqlClient;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ProjectHome_001.Database
 {
     class PlayerDatabase
     {
+
         public static int CreatePlayer(string username, string password)
         {
             string saltedPassword = PasswortDerivation.Derive(password);
@@ -28,6 +27,7 @@ namespace ProjectHome_001.Database
                 command.ExecuteNonQuery();
                 connection.Close();
                 return (int)command.LastInsertedId;
+
             }
             catch (Exception e)
             {
@@ -48,8 +48,8 @@ namespace ProjectHome_001.Database
                 command.CommandText = "SELECT * FROM users WHERE name=@name LIMIT 1";
 
                 command.Parameters.AddWithValue("@name", player.DisplayName);
-                
-                using(MySqlDataReader reader = command.ExecuteReader())
+
+                using (MySqlDataReader reader = command.ExecuteReader())
                 {
                     if (reader.HasRows)
                     {
@@ -59,9 +59,8 @@ namespace ProjectHome_001.Database
                     }
                 }
 
-                
                 connection.Close();
-                
+
             }
             catch (Exception e)
             {
@@ -81,12 +80,12 @@ namespace ProjectHome_001.Database
                 command.CommandText = "UPDATE users SET name=@name, cash=@cash WHERE id=@id";
 
                 command.Parameters.AddWithValue("@id", player.Db_Id);
-                command.Parameters.AddWithValue("@name",  player.DisplayName);
+                command.Parameters.AddWithValue("@name", player.DisplayName);
                 command.Parameters.AddWithValue("@cash", player.Cash);
 
                 command.ExecuteNonQuery();
                 connection.Close();
-                
+
             }
             catch (Exception e)
             {
@@ -95,7 +94,7 @@ namespace ProjectHome_001.Database
             }
         }
 
-        public static bool CheckLogInDetails(string username, string input)
+        public static bool CheckLoginDetails(string username, string input)
         {
             string password = "";
 
@@ -115,15 +114,11 @@ namespace ProjectHome_001.Database
                     {
                         reader.Read();
                         password = reader.GetString("password");
-
                     }
                 }
-
-
                 connection.Close();
 
-                if (PasswortDerivation.Verify(password, input)) return true;
-
+                return PasswortDerivation.Verify(password, input);
 
             }
             catch (Exception e)
@@ -152,7 +147,6 @@ namespace ProjectHome_001.Database
                     {
                         connection.Close();
                         return true;
-
                     }
                 }
                 connection.Close();
@@ -160,8 +154,8 @@ namespace ProjectHome_001.Database
             }
             catch (Exception e)
             {
-                Alt.Log("DoesPlayerExists: " + e.StackTrace);
-                Alt.Log("DoesPlayerExists: " + e.Message);
+                Alt.Log("DoesPlayerNameExists: " + e.StackTrace);
+                Alt.Log("DoesPlayerNameExists: " + e.Message);
             }
             return false;
         }

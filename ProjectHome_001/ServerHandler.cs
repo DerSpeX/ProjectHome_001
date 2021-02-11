@@ -1,6 +1,6 @@
 ﻿using AltV.Net;
 using AltV.Net.Elements.Entities;
-using AltV.Net.Elements.Factories;
+using ProjectHome_001.Factories;
 using ProjectHome_001.Database;
 
 namespace ProjectHome_001
@@ -21,12 +21,12 @@ namespace ProjectHome_001
 
         public override IEntityFactory<IVehicle> GetVehicleFactory()
         {
-            return new VehicleFactory();
+            return new ProjectHome_001.Factories.VehicleFactory();
         }
 
         public override IEntityFactory<IPlayer> GetPlayerFactory()
         {
-            return new PlayerFactory();
+            return new ProjectHome_001.Factories.PlayerFactory();
         }
 
     }

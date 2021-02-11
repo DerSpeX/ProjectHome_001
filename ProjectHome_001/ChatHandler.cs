@@ -136,7 +136,7 @@ namespace ProjectHome_001
                 if(player.Position.Distance(target.Position) <= 5)
                 {
                     target.Remove();
-                    player.SendNotification((VehicleModel)vehicle.Model + " wurde eingeparkt");
+                    player.SendChatMessage((VehicleModel)vehicle.Model + " wurde eingeparkt");
                 }
 
             }

@@ -10,14 +10,42 @@ namespace ProjectHome_001
 {
     class ChatHandler : IScript
     {
+        [ClientEvent("chat:message")]
 
-        
+        public void OnChatMessage(OwnPlayer player, string msg)
+        {
+            if (msg.Length == 0 || msg[0] == '/') return;
+
+            foreach (OwnPlayer target in Alt.GetAllPlayers())
+            {
+                target.SendChatMessage($"{player.Name} sagt: {msg}");
+
+            }
+        }
 
         [CommandEvent(CommandEventType.CommandNotFound)]
         public void OnCommandNotFound(OwnPlayer player, string cmd)
         {
             player.SendChatMessage("{FF0000}[Server] {FFFFFF}Befehl konnte nicht gefunden werden!");
         }
+
+
+        [Command("?")]
+
+        public static void CMD_CommandList(OwnPlayer player)
+        {
+            player.SendChatMessage("/veh [1-255] [1-255] [1-255] = Fahrzeugspawn.");
+            player.SendChatMessage("/pos = Zeigt deine aktuellen Koordinaten.");
+            player.SendChatMessage("/go [x] [y] [z] = Spawnt dich zu den eingegebenen Koordinaten.");
+            player.SendChatMessage("/engine oder Tastendruck [M] = Motor anschalten/ausschalten.");
+            player.SendChatMessage("/fixveh = Fahrzeugreperatur.");
+            player.SendChatMessage("/player = Liste aller Spieler die sich auf dem Server befinden.");
+            player.SendChatMessage("/team [1-4] = Hier kannst du eines von 4 Teams wählen.");
+            player.SendChatMessage("/SCiD = Hier kannst du dir deine Social-Club ID anzeigen lassen.");
+            player.SendChatMessage("/remveh [Bsp.FBI2] = entfernt Fahrzeug innerhalb von 5 Metern.");
+
+        }
+
 
         [Command("veh")]
         public static void CMD_CreateVehicle(OwnPlayer player, string vehName, int r = 0, int g = 0, int b = 0)
@@ -43,7 +71,7 @@ namespace ProjectHome_001
 
             player.SetData("ProjectHome_001:vehicle", veh);
 
-            player.SendChatMessage("Fahrzeug gespawnt!");
+            player.SendChatMessage(vehName + " wurde gespawnt!");
 
         }
 
@@ -95,6 +123,22 @@ namespace ProjectHome_001
             foreach (OwnPlayer target in Alt.GetAllPlayers())
             {
                 player.SendChatMessage(target.Name.ToString());
+            }
+        }
+
+
+        [Command("remveh")]
+
+        public static void CMD_RemoveVehicle(OwnPlayer player, OwnVehicle vehicle)
+        {
+            foreach (OwnVehicle target in Alt.GetAllVehicles())
+            {
+                if(player.Position.Distance(target.Position) <= 5)
+                {
+                    target.Remove();
+                    player.SendNotification((VehicleModel)vehicle.Model + " wurde eingeparkt");
+                }
+
             }
         }
 

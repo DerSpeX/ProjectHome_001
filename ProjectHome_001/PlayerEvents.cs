@@ -118,7 +118,6 @@ namespace ProjectHome_001
             player.GiveWeapon(AltV.Net.Enums.WeaponModel.AssaultRifle, 999, true);
             player.GiveWeapon(AltV.Net.Enums.WeaponModel.APPistol, 999, true);
             player.GiveWeapon(AltV.Net.Enums.WeaponModel.AntiqueCavalryDagger, 999, true);
-
             //Alt.Emit("eventname");
 
             /*if (PlayerDatabase.DoesPlayerNameExists(player.Name)) {
@@ -129,6 +128,15 @@ namespace ProjectHome_001
 
             player.SendNotification($"Cash: ~b~{player.Cash}$");*/
         }
+
+        public static void SendNotification(OwnPlayer player, string msg)
+        {
+            player.Emit("ProjectHome_001:notify", msg);
+        }
+
+
+
+
 
         [ScriptEvent(ScriptEventType.PlayerDead)]
 
@@ -164,7 +172,7 @@ namespace ProjectHome_001
         public void OnPlayerEnterVehicle(OwnVehicle vehicle, OwnPlayer player, byte seat)
         {
             //vehicle.SecondaryColorRgb = new Rgba(255, 0, 0, 255);
-            player.SendNotification("Fahrzeug betreten!");
+            player.SendNotification((VehicleModel)vehicle.Model + " betreten");
             vehicle.RadioStation = (uint)RadioStation.FlyloFm;
         }
 
@@ -172,7 +180,7 @@ namespace ProjectHome_001
         public void OnPlayerLeaveVehicle(OwnVehicle vehicle, OwnPlayer player, byte seat)
         {
             //vehicle.SecondaryColorRgb = new Rgba(255, 255, 255, 255);
-            player.SendNotification("Fahrzeug verlassen!");
+            player.SendNotification((VehicleModel)vehicle.Model + " verlassen");
         }
 
         //[ServerEvent("eventname")]

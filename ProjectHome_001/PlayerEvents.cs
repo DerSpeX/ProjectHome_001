@@ -22,7 +22,6 @@ namespace ProjectHome_001
         [ScriptEvent(ScriptEventType.PlayerConnect)]
         public void OnPlayerConnect(OwnPlayer player, string reason)
         {
-
             player.Model = (uint)PedModel.FilmDirector;
             player.Spawn(new Position(-1041, -2743, 14), 0);
             player.Emit("ProjectHome_001:configflags");
@@ -128,6 +127,10 @@ namespace ProjectHome_001
 
             player.SendNotification($"Cash: ~b~{player.Cash}$");*/
         }
+
+        
+
+
 
         public static void SendNotification(OwnPlayer player, string msg)
         {

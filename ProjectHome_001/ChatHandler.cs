@@ -126,7 +126,6 @@ namespace ProjectHome_001
             }
         }
 
-
         [Command("remveh")]
 
         public static void CMD_RemoveVehicle(OwnPlayer player, OwnVehicle vehicle)
@@ -136,7 +135,7 @@ namespace ProjectHome_001
                 if(player.Position.Distance(target.Position) <= 5)
                 {
                     target.Remove();
-                    player.SendChatMessage((VehicleModel)vehicle.Model + " wurde eingeparkt");
+                    player.SendChatMessage("Fahrzeug wurde eingeparkt"); //fehlerhaft
                 }
 
             }

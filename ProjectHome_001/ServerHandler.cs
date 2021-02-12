@@ -11,6 +11,7 @@ namespace ProjectHome_001
         {
             Alt.Log(" >> Server wird gestartet! << ");
             new OwnDatabase();
+            Alt.Log("Pre Alpha v.0.0.1");
             
         }
 

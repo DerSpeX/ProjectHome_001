@@ -23,8 +23,8 @@ namespace ProjectHome_001
         public void OnPlayerConnect(OwnPlayer player, string reason)
         {
 
-            player.Model = (uint)PedModel.CletusCutscene;
-            player.Spawn(new Position(0, 0, 72), 0);
+            player.Model = (uint)PedModel.Hippie01AFY;
+            player.Spawn(new Position(-1041, -2743, 14), 0);
             player.Emit("ProjectHome_001:configflags");
             player.GiveWeapon(AltV.Net.Enums.WeaponModel.AdvancedRifle, 999, true);
             player.GiveWeapon(AltV.Net.Enums.WeaponModel.Widowmaker, 999, true);

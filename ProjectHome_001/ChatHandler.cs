@@ -126,7 +126,7 @@ namespace ProjectHome_001
             }
         }
 
-        [Command("remveh")]
+        /*[Command("remveh")]
 
         public static void CMD_RemoveVehicle(OwnPlayer player, OwnVehicle vehicle)
         {
@@ -138,6 +138,64 @@ namespace ProjectHome_001
                     player.SendChatMessage("Fahrzeug wurde eingeparkt"); //fehlerhaft
                 }
 
+            }
+        }*/
+
+        [Command("getHere")]
+
+        public static void CMD_GetHere(OwnPlayer player, string name)
+        {
+            foreach (OwnPlayer target in Alt.GetAllPlayers())
+            {
+                if (name == target.Name)
+                {
+                    target.SetPosition(player.GetPosition());
+                }
+            }
+        }
+        
+        [Command("kick")]
+
+        public static void CMD_KickPlayer(OwnPlayer player, string name)
+        {
+            foreach (OwnPlayer target in Alt.GetAllPlayers())
+            {
+                if (name == target.Name)
+                {
+                    target.Kick("Deine Verbindung wurde getrennt");
+                }
+            }
+        }
+        
+        [Command("door")]
+        public static void CMD_CheckDoor(OwnPlayer player)
+        {
+            if (!player.IsInVehicle || player.Seat != 1) return;
+            OwnVehicle veh = (OwnVehicle)player.Vehicle;
+            veh.SetDoorState(0, 0);
+            veh.SetDoorState(1, 1);
+            player.SendChatMessage(veh.GetDoorState(0).ToString()); //Debug Log
+            player.SendChatMessage(veh.GetDoorState(1).ToString()); //Debug Log
+        }
+        
+        [Command("remveh")]
+
+        public static void CMD_RemoveVehicle(OwnPlayer player, string vehName)
+        {
+            uint vehHash = Alt.Hash(vehName);
+
+            foreach (OwnVehicle target in Alt.GetAllVehicles())
+            {
+                if (player.Position.Distance(target.Position) <= 5 && target.GetHashCode() == vehHash)
+                {
+                    target.Remove();
+                    player.SendChatMessage(target.GetHashCode().ToString() + " = " + vehHash); //Debug Log
+                    player.SendChatMessage("Fahrzeug wurde eingeparkt"); //fehlerhaft
+                }
+                else
+                {
+                    player.SendChatMessage(target.GetHashCode().ToString() + " ist nicht " + vehHash); //Debug Log
+                }
             }
         }
 

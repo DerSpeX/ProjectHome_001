@@ -23,7 +23,7 @@ namespace ProjectHome_001
         public void OnPlayerConnect(OwnPlayer player, string reason)
         {
 
-            player.Model = (uint)PedModel.Hippie01AFY;
+            player.Model = (uint)PedModel.FilmDirector;
             player.Spawn(new Position(-1041, -2743, 14), 0);
             player.Emit("ProjectHome_001:configflags");
             player.GiveWeapon(AltV.Net.Enums.WeaponModel.AdvancedRifle, 999, true);
@@ -159,7 +159,7 @@ namespace ProjectHome_001
                 player.SendChatMessage("Du wurdest von " + (VehicleModel)vehicle.Model + " getötet!");
             }
 
-            player.Spawn(new Position(0, 0, 75), 1000);
+            player.Spawn(new Position(-1041, -2743, 14), 1000);
         }
 
         [ScriptEvent(ScriptEventType.PlayerDisconnect)]
@@ -209,7 +209,7 @@ namespace ProjectHome_001
             {
                 //Passwort ist korrekt
                 player.LoadPlayer(username);
-                player.Spawn(new Position(0, 0, 72), 0);
+                player.Spawn(new Position(-1041, -2743, 14), 0);
                 player.Emit("ProjectHome_001:loginSuccess");
                 player.SendNotification("Erfolgreich eingeloggt!");
                 if (player.HasData("ProjectHome_001:loginattempts")) player.DeleteData("ProjectHome_001:loginattempts");
@@ -258,7 +258,7 @@ namespace ProjectHome_001
             else
             {
                 player.CreatePlayer(username, password);
-                player.Spawn(new Position(0, 0, 72), 0);
+                player.Spawn(new Position(-1041, -2743, 14), 0);
                 player.Emit("ProjectHome_001:loginSuccess");
             }
 

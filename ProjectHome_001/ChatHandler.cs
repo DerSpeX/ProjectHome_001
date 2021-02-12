@@ -166,18 +166,20 @@ namespace ProjectHome_001
                 }
             }
         }
-        
+
         [Command("door")]
-        public static void CMD_CheckDoor(OwnPlayer player)
+        public static void CMD_CheckDoor(OwnPlayer player, byte state)
         {
             if (!player.IsInVehicle || player.Seat != 1) return;
             OwnVehicle veh = (OwnVehicle)player.Vehicle;
-            veh.SetDoorState(0, 0);
-            veh.SetDoorState(1, 1);
-            player.SendChatMessage(veh.GetDoorState(0).ToString()); //Debug Log
-            player.SendChatMessage(veh.GetDoorState(1).ToString()); //Debug Log
+            veh.SetDoorState(0, state); // 0 = Fahrertür
+            veh.SetDoorState(1, state); // 1= Beifahrertür
+            veh.SetDoorState(2, state);
+            veh.SetDoorState(3, state);
+            veh.SetDoorState(4, state);
+            veh.SetDoorState(4, state);
         }
-        
+
         [Command("remveh")]
 
         public static void CMD_RemoveVehicle(OwnPlayer player, string vehName)
@@ -186,15 +188,15 @@ namespace ProjectHome_001
 
             foreach (OwnVehicle target in Alt.GetAllVehicles())
             {
-                if (player.Position.Distance(target.Position) <= 5 && target.GetHashCode() == vehHash)
+                if (player.Position.Distance(target.Position) <= 5 && target.Id == vehHash)
                 {
                     target.Remove();
-                    player.SendChatMessage(target.GetHashCode().ToString() + " = " + vehHash); //Debug Log
+                    player.SendChatMessage(target.Id + " = " + vehHash); //Debug Log
                     player.SendChatMessage("Fahrzeug wurde eingeparkt"); //fehlerhaft
                 }
                 else
                 {
-                    player.SendChatMessage(target.GetHashCode().ToString() + " ist nicht " + vehHash); //Debug Log
+                    player.SendChatMessage(target.Id + " ist nicht " + vehHash); //Debug Log
                 }
             }
         }

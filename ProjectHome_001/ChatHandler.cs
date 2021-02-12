@@ -43,6 +43,11 @@ namespace ProjectHome_001
             player.SendChatMessage("/team [1-4] = Hier kannst du eines von 4 Teams wählen.");
             player.SendChatMessage("/SCiD = Hier kannst du dir deine Social-Club ID anzeigen lassen.");
             player.SendChatMessage("/remveh [Bsp.FBI2] = entfernt Fahrzeug innerhalb von 5 Metern.");
+            player.SendChatMessage("/doorlock verschließt Türen von innen");
+            player.SendChatMessage("/doorunlock öffnet Türen von innen");
+            player.SendChatMessage("/getHere [Name] portet Spieler XY zu mir");
+            player.SendChatMessage("/goThere [Name] portet mich zum Spieler XY");
+            player.SendChatMessage("/kick [Name] kickt den Spieler XY");
 
         }
 
@@ -149,11 +154,24 @@ namespace ProjectHome_001
             {
                 if (name == target.Name)
                 {
+                    target.SetPosition(player.GetPosition());
+                }
+            }
+        }
+
+        [Command("goThere")]
+
+        public static void CMD_GoThere(OwnPlayer player, string name)
+        {
+            foreach (OwnPlayer target in Alt.GetAllPlayers())
+            {
+                if (name == target.Name)
+                {
                     player.SetPosition(target.GetPosition());
                 }
             }
         }
-        
+
         [Command("kick")]
 
         public static void CMD_KickPlayer(OwnPlayer player, string name)
@@ -167,17 +185,51 @@ namespace ProjectHome_001
             }
         }
 
-        [Command("door")]
-        public static void CMD_CheckDoor(OwnPlayer player, byte state)
+        [Command("doorlock")]
+        public static void CMD_DoorLock(OwnPlayer player)
         {
             if (!player.IsInVehicle || player.Seat != 1) return;
+
             OwnVehicle veh = (OwnVehicle)player.Vehicle;
-            veh.SetDoorState(0, state); // 0 = Fahrertür
-            veh.SetDoorState(1, state); // 1= Beifahrertür
-            veh.SetDoorState(2, state);
-            veh.SetDoorState(3, state);
-            veh.SetDoorState(4, state);
-            veh.SetDoorState(4, state);
+            veh.LockState = VehicleLockState.ForceDoorsShut;
+            veh.LockState = VehicleLockState.Locked;
+        }
+
+        [Command("doorunlock")]
+        public static void CMD_DoorUnlock(OwnPlayer player)
+        {
+            if (!player.IsInVehicle || player.Seat != 1) return;
+
+            OwnVehicle veh = (OwnVehicle)player.Vehicle;
+            veh.LockState = VehicleLockState.Unlocked;
+        }
+
+        [Command("doorstight")] //Türen verriegelbar
+        public static void CMD_Doortight(OwnPlayer player)
+        {
+            if (!player.IsInVehicle || player.Seat != 1) return;
+
+            OwnVehicle veh = (OwnVehicle)player.Vehicle;
+            veh.SetDoorState(0, 0); // 0 = Fahrertür
+            veh.SetDoorState(1, 0); // 1= Beifahrertür
+            veh.SetDoorState(2, 0); // Türen hinten evtl. links
+            veh.SetDoorState(3, 0); // Türen hinten evtl. rechts
+            veh.SetDoorState(4, 0); // evtl. Motorhaube
+            veh.SetDoorState(5, 0); // evtl. Kofferraum
+        }
+
+        [Command("doorswide")] //Türen nicht verriegelbar
+        public static void CMD_DoorWide(OwnPlayer player)
+        {
+            if (!player.IsInVehicle || player.Seat != 1) return;
+
+            OwnVehicle veh = (OwnVehicle)player.Vehicle;
+            veh.SetDoorState(0, 1); // 0 = Fahrertür
+            veh.SetDoorState(1, 1); // 1= Beifahrertür
+            veh.SetDoorState(2, 1); // Türen hinten evtl. links
+            veh.SetDoorState(3, 1); // Türen hinten evtl. rechts
+            veh.SetDoorState(4, 1); // evtl. Motorhaube
+            veh.SetDoorState(5, 1); // evtl. Kofferraum
         }
 
         [Command("remveh")]
@@ -188,15 +240,16 @@ namespace ProjectHome_001
 
             foreach (OwnVehicle target in Alt.GetAllVehicles())
             {
-                if (player.Position.Distance(target.Position) <= 5 && target.Id == vehHash)
+                if (player.Position.Distance(target.Position) <= 5 && target.Model == vehHash)
                 {
-                    target.Remove();
-                    player.SendChatMessage(target.Id + " = " + vehHash); //Debug Log
+                    player.SendChatMessage(target.Model + " = " + vehHash); //Debug Log
                     player.SendChatMessage("Fahrzeug wurde eingeparkt"); //fehlerhaft
+                    target.Remove();
+                    return;
                 }
                 else
                 {
-                    player.SendChatMessage(target.Id + " ist nicht " + vehHash); //Debug Log
+                    player.SendChatMessage(target.Model + " ist nicht " + vehHash); //Debug Log
                 }
             }
         }
@@ -210,4 +263,3 @@ namespace ProjectHome_001
         }
     }
 }
-

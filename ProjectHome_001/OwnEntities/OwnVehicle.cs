@@ -54,7 +54,6 @@ namespace ProjectHome_001.OwnEntities
                 OwnPlayer player = (OwnPlayer)NetworkOwner;
                 player.SendNotification("Motor aus");
             }
-
         }
     }
 }

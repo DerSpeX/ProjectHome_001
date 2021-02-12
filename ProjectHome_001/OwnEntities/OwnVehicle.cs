@@ -43,11 +43,7 @@ namespace ProjectHome_001.OwnEntities
                 return;
             }
             EngineOn = !EngineOn;
-        }
 
-
-        public void Engines()
-        {
             if (EngineOn)
             {
                 OwnPlayer player = (OwnPlayer)NetworkOwner;
@@ -58,7 +54,7 @@ namespace ProjectHome_001.OwnEntities
                 OwnPlayer player = (OwnPlayer)NetworkOwner;
                 player.SendNotification("Motor aus");
             }
-
+            
         }
     }
 }

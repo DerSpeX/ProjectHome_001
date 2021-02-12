@@ -183,6 +183,18 @@ namespace ProjectHome_001
             player.SendNotification((VehicleModel)vehicle.Model + " verlassen");
         }
 
+        public void OnPlayerToggleEngine(OwnPlayer player, OwnVehicle vehicle)
+        {
+            if (vehicle.EngineOn)
+            {
+                player.SendNotification("Motor an");
+            }
+            else
+            {
+                player.SendNotification("Motor aus");
+            }
+        }
+
         //[ServerEvent("eventname")]
 
         [ClientEvent("ProjectHome_001:loginAttempt")]

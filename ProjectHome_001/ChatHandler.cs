@@ -149,7 +149,7 @@ namespace ProjectHome_001
             {
                 if (name == target.Name)
                 {
-                    target.SetPosition(player.GetPosition());
+                    player.SetPosition(target.GetPosition());
                 }
             }
         }

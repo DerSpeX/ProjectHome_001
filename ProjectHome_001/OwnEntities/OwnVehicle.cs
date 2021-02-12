@@ -39,8 +39,8 @@ namespace ProjectHome_001.OwnEntities
             if (!EngineOn && FuelType != FuelTypes.None && Fuel == 0)
             {
                 OwnPlayer player = (OwnPlayer)NetworkOwner;
-                player.SendNotification("Tank leer!");
-                return;
+                player.SendNotification("Tank leer");
+                //return;
             }
             EngineOn = !EngineOn;
 
@@ -54,7 +54,7 @@ namespace ProjectHome_001.OwnEntities
                 OwnPlayer player = (OwnPlayer)NetworkOwner;
                 player.SendNotification("Motor aus");
             }
-            
+
         }
     }
 }

@@ -5,6 +5,7 @@ using AltV.Net.Elements.Entities;
 using AltV.Net.Enums;
 using AltV.Net.Resources.Chat.Api;
 using ProjectHome_001.OwnEntities;
+using static ProjectHome_001.Enums;
 
 namespace ProjectHome_001
 {
@@ -56,7 +57,7 @@ namespace ProjectHome_001
         public static void CMD_CreateVehicle(OwnPlayer player, string vehName, int r = 0, int g = 0, int b = 0)
         {
             uint vehHash = Alt.Hash(vehName);
-            if (!Enum.IsDefined(typeof(AltV.Net.Enums.VehicleModel), vehHash))
+            if (!Enum.IsDefined(typeof(VehicleModel), vehHash) && !Enum.IsDefined(typeof(ModCars), vehHash))
             {
                 player.SendChatMessage("[Server] Ungültiger Fahrzeugname!");
                 return;
@@ -66,7 +67,7 @@ namespace ProjectHome_001
             if (player.HasData("ProjectHome_001:vehicle"))
             {
                 player.GetData("ProjectHome_001:vehicle", out veh);
-                veh.Remove();
+               // veh.Remove();    //vorerst entfernt
             }
 
             //IVehicle veh = Alt.CreateVehicle(vehHash, GetRandomPositionAround(player.Position, 5.0f), player.Rotation);
@@ -243,7 +244,7 @@ namespace ProjectHome_001
                 if (player.Position.Distance(target.Position) <= 5 && target.Model == vehHash)
                 {
                     player.SendChatMessage(target.Model + " = " + vehHash); //Debug Log
-                    player.SendChatMessage("Fahrzeug wurde eingeparkt"); //fehlerhaft
+                    player.SendNotification("Fahrzeug wurde eingeparkt"); //fehlerhaft
                     target.Remove();
                     return;
                 }

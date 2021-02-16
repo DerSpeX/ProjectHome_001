@@ -6,11 +6,14 @@ using AltV.Net.Enums;
 using AltV.Net.Resources.Chat.Api;
 using ProjectHome_001.OwnEntities;
 using static ProjectHome_001.Enums;
+using System.Collections.Generic;
 
 namespace ProjectHome_001
 {
     class ChatHandler : IScript
     {
+        public static List<OwnVehicle> parkedCars = new List<OwnVehicle>();
+
         [ClientEvent("chat:message")]
 
         public void OnChatMessage(OwnPlayer player, string msg)
@@ -20,7 +23,6 @@ namespace ProjectHome_001
             foreach (OwnPlayer target in Alt.GetAllPlayers())
             {
                 target.SendChatMessage($"{player.Name} sagt: {msg}");
-
             }
         }
 
@@ -75,7 +77,24 @@ namespace ProjectHome_001
 
             player.SetData("ProjectHome_001:vehicle", veh);
 
-            player.SendChatMessage(vehName + " wurde gespawnt!");
+            veh.License = veh.Model.ToString() + veh.Id; //nur testweise
+            veh.Owner = player.DisplayName;
+
+            player.SendChatMessage(vehName + " wurde gespawnt! Kennzeichen: " + veh.License);
+        }
+
+        [Command("getOwner")]
+        public static void CMD_GetOwner(OwnPlayer player, string license)
+        {
+            foreach (OwnVehicle target in Alt.GetAllVehicles())
+            {
+                if (target.License == license)
+                {
+                    player.SendChatMessage("Der Besitzer ist: " + target.Owner);
+                    return;
+                }
+                player.SendChatMessage("kein Fahrzeug mit diesem Kennzeichen");
+            }
         }
 
         [Command("engine")]
@@ -94,50 +113,46 @@ namespace ProjectHome_001
             veh.Repair();
         }
 
-        [Command("kick")]
-        public static void CMD_KickPlayer(OwnPlayer player, string name)
-        {
-            foreach (OwnPlayer target in Alt.GetAllPlayers())
-            {
-                if (name == target.Name)
-                {
-                    target.Kick("Deine Verbindung wurde getrennt");
-                }
-            }
-        }
-
-        [Command("doorlock")] //schließt alle Fahrzeuge in der Nähe ab, kann nur über einen Schlüssel spezifiziert werden
+        [Command("doorlock")] //schließt das nächste Fahrzeuge ab
         public static void CMD_DoorLock(OwnPlayer player)
         {
+            float dist = 99;
+            OwnVehicle tmp = null;
 
             foreach (OwnVehicle target in Alt.GetAllVehicles())
             {
-                if (player.Position.Distance(target.Position) <= 5)
+                if (player.Position.Distance(target.Position) < dist)
                 {
-                    target.LockState = VehicleLockState.ForceDoorsShut; //greift nicht
-                    target.LockState = VehicleLockState.Locked;
+                    dist = player.Position.Distance(target.Position);
+                    tmp = target;
                 }
-                else
-                {
-                    player.SendChatMessage("kein Fahrzeug in deiner Nähe");
-                }
+                target.LockState = VehicleLockState.ForceDoorsShut; //greift nicht
+                target.LockState = VehicleLockState.Locked;
+            }
+            if(tmp == null)
+            {
+                player.SendChatMessage("kein Fahrzeug in deiner Nähe");
             }
         }
 
-        [Command("doorunlock")] //schließt alle Fahrzeuge in der Nähe auf, kann nur über einen Schlüssel spezifiziert werden
+        [Command("doorunlock")] //schließt das nächste Fahrzeuge auf
         public static void CMD_DoorUnlock(OwnPlayer player)
         {
+            float dist = 99;
+            OwnVehicle tmp = null;
 
             foreach (OwnVehicle target in Alt.GetAllVehicles())
             {
-                if (player.Position.Distance(target.Position) <= 5)
+                if (player.Position.Distance(target.Position) < dist)
                 {
-                    target.LockState = VehicleLockState.Unlocked;
+                    dist = player.Position.Distance(target.Position);
+                    tmp = target;
                 }
-                else
-                {
-                    player.SendChatMessage("kein Fahrzeug in deiner Nähe");
-                }
+                target.LockState = VehicleLockState.Unlocked;
+            }
+            if (tmp == null)
+            {
+                player.SendChatMessage("kein Fahrzeug in deiner Nähe");
             }
         }
 
@@ -147,7 +162,7 @@ namespace ProjectHome_001
             if (!player.IsInVehicle || player.Seat != 1) return;
 
             OwnVehicle veh = (OwnVehicle)player.Vehicle;
-            veh.SetDoorState(0, 0); // 0 = Fahrertür
+            veh.SetDoorState(0, 0); // 0 = Fahrertür //!Convert.ToByte(g)!
             veh.SetDoorState(1, 0); // 1= Beifahrertür
             veh.SetDoorState(2, 0); // Türen hinten vsl. links
             veh.SetDoorState(3, 0); // Türen hinten vsl. rechts
@@ -178,6 +193,7 @@ namespace ProjectHome_001
             {
                 if (player.Position.Distance(target.Position) <= 5 && target.Model == vehHash)
                 {
+                    parkedCars.Add(target);
                     player.SendNotification("Fahrzeug wurde eingeparkt"); //funktioniert nur bei manchen
                     target.Remove();
                     return;
@@ -189,13 +205,25 @@ namespace ProjectHome_001
             }
         }
 
-        [Command("getSpeed")]
+        [Command("ausparken")] //test
+        public static void CMD_ausparken(OwnPlayer player, string license)
+        {
+            foreach(OwnVehicle target in parkedCars)
+            {
+                if(target.License == license)
+                {
+                    OwnVehicle veh = new OwnVehicle(target.Model, GetRandomPositionAround(player.Position, 5.0f), player.Rotation);
+                }
+            }
+        }
+
+        [Command("getSpeed")] //wirft immer 0 zurück, selbst im freien Fall
         public static void CMD_GetSpeed(OwnPlayer player)
         {
             player.SendChatMessage(player.MoveSpeed.ToString());
         }
 
-        [Command("togglesiren")]
+        [Command("togglesiren")] //aktiviert/deaktiviert nur die Sirene ganz normal, wo ist der Sound?
         public static void CMD_ToggleSiren(OwnPlayer player)
         {
             if (!player.IsInVehicle || player.Seat != 1) return;
@@ -215,8 +243,7 @@ namespace ProjectHome_001
         [Command("pos")]
         public static void CMD_LocateMyPos(OwnPlayer player)
         {
-            player.GetPosition();
-            player.SendChatMessage(player.GetPosition().ToString());
+            player.SendChatMessage(player.GetPosition().X.ToString() + " // " + player.GetPosition().Y.ToString() + " // " + player.GetPosition().Z.ToString());
         }
 
         [Command("go")]
@@ -276,6 +303,18 @@ namespace ProjectHome_001
             player.Visible = false;
             player.Health = player.MaxHealth;
             player.Armor = player.MaxArmor;
+        }
+
+        [Command("kick")]
+        public static void CMD_KickPlayer(OwnPlayer player, string name)
+        {
+            foreach (OwnPlayer target in Alt.GetAllPlayers())
+            {
+                if (name == target.Name)
+                {
+                    target.Kick("Deine Verbindung wurde getrennt");
+                }
+            }
         }
 
         public static Position GetRandomPositionAround(Position pos, float range)

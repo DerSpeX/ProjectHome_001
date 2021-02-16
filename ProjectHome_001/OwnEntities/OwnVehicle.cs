@@ -13,6 +13,9 @@ namespace ProjectHome_001.OwnEntities
         public FuelTypes FuelType { get; set; }
         public float Fuel { get; set; }
 
+        public string License { get; set; }
+
+        public string Owner { get; set; }
         public OwnVehicle(IntPtr nativePointer, ushort id) : base(nativePointer, id)
         {
 

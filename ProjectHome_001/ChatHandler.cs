@@ -195,6 +195,15 @@ namespace ProjectHome_001
             player.SendChatMessage(player.MoveSpeed.ToString());
         }
 
+        [Command("togglesiren")]
+        public static void CMD_ToggleSiren(OwnPlayer player)
+        {
+            if (!player.IsInVehicle || player.Seat != 1) return;
+
+            OwnVehicle veh = (OwnVehicle)player.Vehicle;
+            veh.SirenActive = !veh.SirenActive;
+        }
+
         // Spielerbefehle
 
         [Command("team")]

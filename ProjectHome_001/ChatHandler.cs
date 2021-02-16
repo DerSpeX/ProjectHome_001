@@ -32,7 +32,6 @@ namespace ProjectHome_001
 
 
         [Command("?")]
-
         public static void CMD_CommandList(OwnPlayer player)
         {
             player.SendChatMessage("/veh [1-255] [1-255] [1-255] = Fahrzeugspawn.");
@@ -78,7 +77,6 @@ namespace ProjectHome_001
             player.SetData("ProjectHome_001:vehicle", veh);
 
             player.SendChatMessage(vehName + " wurde gespawnt!");
-
         }
 
         [Command("engine")]
@@ -117,7 +115,6 @@ namespace ProjectHome_001
         }
 
         [Command("SCId")]
-
         public static void CMD_SocialClubId(OwnPlayer player)
         {
             player.SendChatMessage(player.SocialClubId.ToString());
@@ -132,23 +129,7 @@ namespace ProjectHome_001
             }
         }
 
-        /*[Command("remveh")]
-
-        public static void CMD_RemoveVehicle(OwnPlayer player, OwnVehicle vehicle)
-        {
-            foreach (OwnVehicle target in Alt.GetAllVehicles())
-            {
-                if(player.Position.Distance(target.Position) <= 5)
-                {
-                    target.Remove();
-                    player.SendChatMessage("Fahrzeug wurde eingeparkt"); //fehlerhaft
-                }
-
-            }
-        }*/
-
         [Command("getHere")]
-
         public static void CMD_GetHere(OwnPlayer player, string name)
         {
             foreach (OwnPlayer target in Alt.GetAllPlayers())
@@ -161,7 +142,6 @@ namespace ProjectHome_001
         }
 
         [Command("goThere")]
-
         public static void CMD_GoThere(OwnPlayer player, string name)
         {
             foreach (OwnPlayer target in Alt.GetAllPlayers())
@@ -174,7 +154,6 @@ namespace ProjectHome_001
         }
 
         [Command("kick")]
-
         public static void CMD_KickPlayer(OwnPlayer player, string name)
         {
             foreach (OwnPlayer target in Alt.GetAllPlayers())
@@ -189,20 +168,40 @@ namespace ProjectHome_001
         [Command("doorlock")]
         public static void CMD_DoorLock(OwnPlayer player)
         {
-            if (!player.IsInVehicle || player.Seat != 1) return;
-
             OwnVehicle veh = (OwnVehicle)player.Vehicle;
-            veh.LockState = VehicleLockState.ForceDoorsShut;
-            veh.LockState = VehicleLockState.Locked;
+            
+
+            foreach (OwnVehicle target in Alt.GetAllVehicles())
+            {
+                if (player.Position.Distance(target.Position) <= 5 && veh.Model == target.Model)
+                {
+                    veh.LockState = VehicleLockState.ForceDoorsShut;
+                    veh.LockState = VehicleLockState.Locked;
+                }
+                else
+                {
+                    player.SendChatMessage("kein Fahrzeug in deiner Nähe");
+                }
+            }
         }
 
         [Command("doorunlock")]
         public static void CMD_DoorUnlock(OwnPlayer player)
         {
-            if (!player.IsInVehicle || player.Seat != 1) return;
-
             OwnVehicle veh = (OwnVehicle)player.Vehicle;
-            veh.LockState = VehicleLockState.Unlocked;
+
+
+            foreach (OwnVehicle target in Alt.GetAllVehicles())
+            {
+                if (player.Position.Distance(target.Position) <= 5 && veh.Model == target.Model)
+                {
+                    veh.LockState = VehicleLockState.Unlocked;
+                }
+                else
+                {
+                    player.SendChatMessage("kein Fahrzeug in deiner Nähe");
+                }
+            }
         }
 
         [Command("doorstight")] //Türen verriegelbar
@@ -234,7 +233,6 @@ namespace ProjectHome_001
         }
 
         [Command("remveh")]
-
         public static void CMD_RemoveVehicle(OwnPlayer player, string vehName)
         {
             uint vehHash = Alt.Hash(vehName);
@@ -243,14 +241,13 @@ namespace ProjectHome_001
             {
                 if (player.Position.Distance(target.Position) <= 5 && target.Model == vehHash)
                 {
-                    player.SendChatMessage(target.Model + " = " + vehHash); //Debug Log
-                    player.SendNotification("Fahrzeug wurde eingeparkt"); //fehlerhaft
+                    player.SendNotification("Fahrzeug wurde eingeparkt"); //funktioniert nur bei manchen
                     target.Remove();
                     return;
                 }
                 else
                 {
-                    player.SendChatMessage(target.Model + " ist nicht " + vehHash); //Debug Log
+                    player.SendChatMessage("kein Fahrzeug mit diesem Namen in deiner Nähe");
                 }
             }
         }

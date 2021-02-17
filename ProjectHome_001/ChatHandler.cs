@@ -22,7 +22,7 @@ namespace ProjectHome_001
 
             foreach (OwnPlayer target in Alt.GetAllPlayers())
             {
-                target.SendChatMessage($"{player.Name} sagt: {msg}");
+                target.SendChatMessage($"{player.DisplayName} sagt: {msg}");
             }
         }
 
@@ -77,7 +77,7 @@ namespace ProjectHome_001
 
             player.SetData("ProjectHome_001:vehicle", veh);
 
-            veh.License = veh.Model.ToString() + veh.Id; //nur testweise
+            veh.License = veh.Model.ToString() + veh.Id.ToString(); //nur testweise
             veh.Owner = player.DisplayName;
 
             player.SendChatMessage(vehName + " wurde gespawnt! Kennzeichen: " + veh.License);
@@ -193,7 +193,7 @@ namespace ProjectHome_001
             {
                 if (player.Position.Distance(target.Position) <= 5 && target.Model == vehHash)
                 {
-                    parkedCars.Add(target);
+                    parkedCars.Add(new OwnVehicle(target.Model, target.Position, target.Rotation , target.FuelType)); //speichere eine Kopie des Fahrzeugs
                     player.SendNotification("Fahrzeug wurde eingeparkt"); //funktioniert nur bei manchen
                     target.Remove();
                     return;
@@ -213,7 +213,29 @@ namespace ProjectHome_001
                 if(target.License == license)
                 {
                     OwnVehicle veh = new OwnVehicle(target.Model, GetRandomPositionAround(player.Position, 5.0f), player.Rotation);
+                    parkedCars.Remove(target);
+                    player.SendChatMessage("Fahrzeug wurde ausgeparkt");
+                    return;
                 }
+            }
+            player.SendChatMessage("kein Fahrzeug mit diesem Kennzeichen eingeparkt");
+        }
+
+        [Command("getLicense")]
+        public static void CMD_getLicense(OwnPlayer player)
+        {
+            if (!player.IsInVehicle || player.Seat != 1) return;
+            OwnVehicle veh = (OwnVehicle)player.Vehicle;
+
+            player.SendChatMessage(veh.License);
+        }
+
+        [Command("getParkedCars")]
+        public static void CMD_getParkedCars(OwnPlayer player)
+        {
+            foreach (OwnVehicle target in parkedCars)
+            {
+                player.SendChatMessage(target.Model.ToString());
             }
         }
 
@@ -222,7 +244,7 @@ namespace ProjectHome_001
         {
             player.SendChatMessage(player.MoveSpeed.ToString());
         }
-
+        
         [Command("togglesiren")] //aktiviert/deaktiviert nur die Sirene ganz normal, wo ist der Sound?
         public static void CMD_ToggleSiren(OwnPlayer player)
         {
@@ -263,7 +285,7 @@ namespace ProjectHome_001
         {
             foreach (OwnPlayer target in Alt.GetAllPlayers())
             {
-                player.SendChatMessage(target.Name.ToString());
+                player.SendChatMessage(target.DisplayName);
             }
         }
 
@@ -272,7 +294,7 @@ namespace ProjectHome_001
         {
             foreach (OwnPlayer target in Alt.GetAllPlayers())
             {
-                if (name == target.Name)
+                if (name == target.DisplayName)
                 {
                     target.SetPosition(player.GetPosition());
                 }
@@ -284,7 +306,7 @@ namespace ProjectHome_001
         {
             foreach (OwnPlayer target in Alt.GetAllPlayers())
             {
-                if (name == target.Name)
+                if (name == target.DisplayName)
                 {
                     player.SetPosition(target.GetPosition());
                 }
@@ -310,7 +332,7 @@ namespace ProjectHome_001
         {
             foreach (OwnPlayer target in Alt.GetAllPlayers())
             {
-                if (name == target.Name)
+                if (name == target.DisplayName)
                 {
                     target.Kick("Deine Verbindung wurde getrennt");
                 }

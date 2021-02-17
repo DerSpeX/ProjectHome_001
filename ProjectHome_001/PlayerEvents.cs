@@ -163,6 +163,7 @@ namespace ProjectHome_001
             }
 
             player.Spawn(new Position(-1041, -2743, 14), 1000);
+            player.ClearBloodDamage();
         }
 
         [ScriptEvent(ScriptEventType.PlayerDisconnect)]

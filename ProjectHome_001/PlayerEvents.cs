@@ -162,7 +162,7 @@ namespace ProjectHome_001
                 player.SendChatMessage("Du wurdest von " + (VehicleModel)vehicle.Model + " getötet!");
             }
 
-            player.Spawn(new Position(-1041, -2743, 14), 1000);
+            player.Spawn(new Position(360,-580 ,28 ), 1000);
             player.ClearBloodDamage();
         }
 

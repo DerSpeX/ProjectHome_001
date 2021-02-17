@@ -14,6 +14,8 @@ namespace ProjectHome_001.OwnEntities
 
         public int Team { get; set; }
 
+        public bool IsInRagdoll { get; set; }
+
         public OwnPlayer(IntPtr nativePointer, ushort id) : base(nativePointer, id)
         {
             IsLoggedIn = false;

@@ -193,7 +193,7 @@ namespace ProjectHome_001
             {
                 if (player.Position.Distance(target.Position) <= 5 && target.Model == vehHash)
                 {
-                    parkedCars.Add(new OwnVehicle(target.Model, target.Position, target.Rotation , target.FuelType)); //speichere eine Kopie des Fahrzeugs
+                    //parkedCars.Add(new OwnVehicle(target.Model, target.Position, target.Rotation , target.FuelType)); //speichere eine Kopie des Fahrzeugs, spawned direkt ein neues Fahrzeug
                     player.SendNotification("Fahrzeug wurde eingeparkt"); //funktioniert nur bei manchen
                     target.Remove();
                     return;
@@ -319,10 +319,16 @@ namespace ProjectHome_001
             player.SetWeather(weather);
         }
 
-        [Command("noclip")]
+        [Command("toggleRagdoll")]
+        public static void CMD_ToggleRagdoll(OwnPlayer player)
+        {
+            player.IsInRagdoll = !player.IsInRagdoll;
+        }
+
+        [Command("toggleclip")]
         public static void CMD_NoClip(OwnPlayer player)
         {
-            player.Visible = false;
+            player.Visible = !player.Visible;
             player.Health = player.MaxHealth;
             player.Armor = player.MaxArmor;
         }

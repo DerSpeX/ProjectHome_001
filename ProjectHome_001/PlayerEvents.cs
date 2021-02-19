@@ -22,7 +22,7 @@ namespace ProjectHome_001
         [ScriptEvent(ScriptEventType.PlayerConnect)]
         public void OnPlayerConnect(OwnPlayer player, string reason)
         {
-            player.Model = (uint)PedModel.FbiSuit01Cutscene;
+            player.Model = (uint)PedModel.Doctor01SMM;
             player.Spawn(new Position(-1041, -2743, 14), 0);
             player.Emit("ProjectHome_001:configflags");
             player.GiveWeapon(AltV.Net.Enums.WeaponModel.AdvancedRifle, 999, true);
@@ -162,7 +162,7 @@ namespace ProjectHome_001
                 player.SendChatMessage("Du wurdest von " + (VehicleModel)vehicle.Model + " getötet!");
             }
 
-            player.Spawn(new Position(-1041, -2743, 14), 1000);
+            player.Spawn(new Position(360,-580 ,28 ), 1000);
             player.ClearBloodDamage();
         }
 

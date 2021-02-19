@@ -198,11 +198,8 @@ namespace ProjectHome_001
                     target.Remove();
                     return;
                 }
-                else
-                {
-                    player.SendChatMessage("kein Fahrzeug mit diesem Namen in deiner Nähe");
-                }
             }
+            player.SendChatMessage("kein Fahrzeug mit diesem Kennzeichen eingeparkt");
         }
 
         [Command("ausparken")] //test

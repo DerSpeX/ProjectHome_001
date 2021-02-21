@@ -322,13 +322,13 @@ namespace ProjectHome_001
             player.IsInRagdoll = !player.IsInRagdoll;
         }
 
-        [Command("toggleclip")]
-        public static void CMD_NoClip(OwnPlayer player)
-        {
-            player.Visible = !player.Visible;
-            player.Health = player.MaxHealth;
-            player.Armor = player.MaxArmor;
-        }
+        //[Command("toggleclip")]
+       // public static void CMD_NoClip(OwnPlayer player)
+       // {
+       //     player.Visible = !player.Visible;
+       //     player.Health = player.MaxHealth;
+        //    player.Armor = player.MaxArmor;
+       // }
 
         [Command("kick")]
         public static void CMD_KickPlayer(OwnPlayer player, string name)
@@ -341,6 +341,24 @@ namespace ProjectHome_001
                 }
             }
         }
+
+
+        [Command("noclipstart")]
+
+        public static void CMD_NoClipStart(OwnPlayer player)
+        {
+            player.Emit("noclip:start");
+            
+        }
+
+        [Command("noclipstop")]
+
+        public static void CMD_NoClipStop(OwnPlayer player)
+        {
+            player.Emit("noclip:stop");
+
+        }
+
 
         public static Position GetRandomPositionAround(Position pos, float range)
         {

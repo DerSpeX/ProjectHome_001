@@ -22,7 +22,7 @@ namespace ProjectHome_001
         [ScriptEvent(ScriptEventType.PlayerConnect)]
         public void OnPlayerConnect(OwnPlayer player, string reason)
         {
-            player.Model = (uint)PedModel.Doctor01SMM;
+            player.Model = (uint)PedModel.Priest;
             player.Spawn(new Position(-1041, -2743, 14), 0);
             player.Emit("ProjectHome_001:configflags");
             player.GiveWeapon(AltV.Net.Enums.WeaponModel.AdvancedRifle, 999, true);
@@ -138,8 +138,12 @@ namespace ProjectHome_001
         }
 
 
+        [ClientEvent]
+        public static void NoClip(OwnPlayer player)
+        {
+            player.Emit("noclip:start");
 
-
+        }
 
         [ScriptEvent(ScriptEventType.PlayerDead)]
 
